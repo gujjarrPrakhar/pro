@@ -1,0 +1,127 @@
+#include<iostream>
+#include<vector>
+using namespace std;
+
+bool iscyclic(vector<vector<int>>& edges,int node,vector<bool>&visited){
+    visited[node]=true;
+    for(int i=0;i<edges[node].size();i++){
+        int child=edges[node][i];
+        if(!visited[child]){
+            if(iscyclic(edges,child,visited)){
+                return true;
+            }
+        }
+        else{
+             return true;
+            
+        }
+    }
+    return false;
+}
+bool dfs(vector<vector<int>>& edges,vector<bool>visited, int n){
+    	
+    for(int i=1;i<=n;i++){
+        if(!visited[i]){
+            if(iscyclic(edges,i,visited)){
+              return true;  
+            }
+          }
+    }
+ return false;
+}
+
+
+
+int Solution::solve(int A, vector<vector<int> > &B) {
+ vector<bool>visited(A+1,false);
+     vector<vector<int>> edges(A+1,vector<int>());
+        for(int j=0;j<B.size();j++){
+            // int t1,t2;
+            edges[B[j][0]].push_back(B[j][1]);
+        }
+  if(dfs( edges,visited, A)){
+      return 1;
+  }
+  return 0;
+}
+
+
+
+
+
+
+
+#include <iostream>
+#include<vector>
+
+using namespace std;
+bool iscyclic(vector<vector<int>>adj,int node,int parentnode,vector<bool>visited){
+    
+    visited[node]=true;
+    for(int j=0;j<adj[node].size();j++){
+        int child=adj[node][j];
+        if(!visited[child]){
+              if(iscyclic(adj,child,node,visited)){
+                  return true;
+              }
+         }
+        else{
+            if(child!=parentnode){
+                return true;
+            }
+        }
+    }
+    return false;
+    
+}
+bool dfs(vector<vector<int>>adj,int n,vector<bool>visited){
+    
+    for(int i=0;i<n;i++){
+        if(!visited[i]){
+          if(iscyclic(adj,i,-1,visited)){
+              return true;
+          }
+      }
+    }
+    return false;
+}
+
+
+int main() {
+
+    
+    int n,m;
+    cin>>n>>m;
+    
+    vector<bool>visited(n,false);
+    vector<vector<int>> adj(n,vector<int>());
+    
+    for(int i=0;i<m;i++){
+        int k,p;
+        cin>>k>>p;
+        adj[k].push_back(p);
+        adj[p].push_back(k);
+        
+    }
+    
+//     int parentnode=-1;
+//     for(int i=0;i<adj.size();i++){
+//         for(int j=0;j<adj[i].size();j++){
+//             cout<<adj[i][j];
+//         }
+//         cout<<endl;
+//     }
+    if(dfs(adj,n,visited)){
+        cout<<"True";
+    }
+    else{
+       cout<<"False";
+    }
+	/*
+		1. You have to take the input by yourself as mentioned in the input format.
+		2. You have to print the output by yourself as per the output format mentioned.
+		3. You may start writing your code below this multi-line comments section.
+	*/
+
+	return 0;
+}
